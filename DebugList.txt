@@ -1,0 +1,50 @@
+My debugged projects
+
+* ProSimulatedBowling
+
++Found bug where 10th frame is not calculated correctly when no strikes/spares occur
+-Corrected by adding score calculation on first throw
+
+else { // executes when first throw is not a strike
+	frame.setScore(frame.getThrow1()); //This code wasn't here
+	frame.setThrow2(getPinsKnockedDown(remainingPins));
+	remainingPins -= frame.getThrow2();
+        ...
++Found bug where series score would be misaligned if it was less than 3 digits
+-Added string formatter to seriesTotal output
+
+String.format("%3d", seriesTotal)
+
++(Code optimization) replaced if statements to ensure frame score alignment with string formatter
+	
+        for (Frame frame : frames) {			
+		System.out.print(String.format("%5d", frame.getScore()));
+		// Add frame score to total for game
+		gameTotal += frame.getScore();
+	}
+
++(Code optimization) same as above
+
+System.out.println(String.format("%8d", gameTotal));
+
++Found bug where frames were not being cleared, so each frame for each game would accumulate
+
+-Corrected by building and calling a clear() method to ensure that the frame values were reset at the beginning of the frame calculation loop
+
+public void clear() {
+	this.score = 0;
+	this.throw1 = 0;
+	this.throw2 = 0;
+	this.throw3 = 0;
+	this.isStrike = false;
+	this.isSpare = false;
+}
+
+*BlackJack
++Found bug where typing \ and hitting enter holds up the program
+-Not corrected
++Found bug where if two aces are drawn on the first hand, the program does not account for and recalculate the handValue to 12 instead of 22. Added if statement to catch this
+if (handValue == 22 && aceCounter == 2) {
+	aceCounter--;
+	handValue -= 10;
+}
